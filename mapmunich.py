@@ -38,8 +38,31 @@ st.write('En este análisis se pretende determinar cuál de los 10 barrios más 
 st.write('A continuación se muestra un mapa con los 10 barrios más populares de Munich.')
 
 # Crear mapa centrado en Theresienwiese
+# Crear mapa centrado en Theresienwiese
 m = folium.Map(location=[48.13583263039702, 11.545248777231926], zoom_start=12)
-folium.Marker([48.13583263039702, 11.545248777231926], popup='Barrio Octokerfest: Theresienwiese').add_to(m)
+
+# Crear popup con HTML y CSS para Theresienwiese
+popup_html = """
+<div style="font-family: Arial; color: black; max-width: 300px;">
+    <strong>Barrio Octokerfest:</strong> Theresienwiese
+</div>
+"""
+popup = folium.Popup(popup_html, max_width=300)
+
+# Añadir el marcador con el popup mejorado
+folium.Marker([48.13583263039702, 11.545248777231926], popup=popup).add_to(m)
+
+
+# Añadir un círculo de 2 kilómetros de radio alrededor de Theresienwiese
+folium.Circle(
+    location=[48.13583263039702, 11.545248777231926],
+    radius=2000,  # Radio en metros
+    color='darkviolet',
+    fill=True,
+    fill_color='violet',
+    fill_opacity=0.2
+).add_to(m)
+
 
 icon_path = 'logoairbnb.png'
 
@@ -62,6 +85,8 @@ for idx, row in top10munich_df.iterrows():
         popup=popup,
         icon=icon
     ).add_to(m)
+    
+ 
 
 # Mostrar el mapa en Streamlit
 folium_static(m)
