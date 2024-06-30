@@ -10,17 +10,8 @@ import geopandas as gpd
 from shapely.geometry import Point, Polygon
 import streamlit as st
 import streamlit_folium as sf
-import streamlit.components.v1 as components
 import folium
 from geopy.geocoders import Nominatim
-import streamlit as st
-import pandas as pd
-from geopy.geocoders import Nominatim
-import folium
-import pandas as pd
-from geopy.geocoders import GoogleV3
-import requests
-import streamlit as st
 from streamlit_folium import folium_static
 from folium.plugins import MarkerCluster
 from folium import IFrame
