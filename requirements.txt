@@ -27,9 +27,12 @@ Flask
 gunicorn
 pyyaml
 fire
+colorama
+beatifulsoup4
 
 # Miscelánea
 geopandas
 chart-studio
 nltk
 kaggle
+lxml

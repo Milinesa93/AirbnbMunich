@@ -75,7 +75,8 @@ for idx, row in top10munich_df.iterrows():
     <div style="font-family: Arial; color: black; max-width: 300px;">
         <strong>Neighbourhood:</strong> {row['neighbourhood']}<br><br>
         <strong>Room Type:</strong> {row['room_type']}<br><br>
-        <strong>Price per day:</strong> ${row['price_perday']}
+        <strong>Price per day:</strong> ${row['price_perday']}<br><br>
+        <strong>Review Scores Location:</strong> {row['review_scores_location']}
     </div>
     """
     popup = folium.Popup(popup_html, max_width=300)
@@ -86,7 +87,6 @@ for idx, row in top10munich_df.iterrows():
         icon=icon
     ).add_to(m)
     
- 
-
+    
 # Mostrar el mapa en Streamlit
 folium_static(m)
