@@ -16,6 +16,11 @@ from streamlit_folium import folium_static
 from folium.plugins import MarkerCluster
 from folium import IFrame
 import streamlit.components.v1 as components
+import yfinance as yf
+import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
+import tempfile
+
 
 
 # Leer el archivo CSV
@@ -23,11 +28,14 @@ file_path = 'top10munichairbnb.csv'
 top10munich_df = pd.read_csv(file_path)
 
 file_pathprop = 'properties.csv'
-propvalues= pd.read_csv(file_pathprop)
+properties_df = pd.read_csv(file_pathprop)
 
 
 base="dark"
-backgroundColor="#2784a0"
+primaryColor="#ffffff"
+backgroundColor="#0b5d75"
+secondaryBackgroundColor="#927600"
+
 
 
 # Crear el título y la descripción en Streamlit
@@ -91,3 +99,49 @@ for idx, row in top10munich_df.iterrows():
 # Mostrar el mapa en Streamlit
 folium_static(m)
 
+# Datos de las propiedades
+data = {
+    'id': ['Maxvorstadt64m²', 'Maxvorstadt54m²', 'Ludwigsvorstadt Isar.26m²', 'Maxvorstadt24m²'],
+    'neighbourhoodMun': ['Maxvorstadt', 'Maxvorstadt', 'Ludwigsvorstadt Isarvorstadt', 'Maxvorstadt'],
+    'rooms': [4, 2, 1, 1],
+    'dimension': [64, 54, 26, 24],
+    'pricepop': [872900, 715000, 318000, 399000],
+    'price_rent': [2000, 1800, 1200, 1200]
+}
+
+df = pd.DataFrame(data)
+
+# Calcular el tiempo de recuperación de la inversión
+df['time_to_recover'] = df['pricepop'] / (df['price_rent'] * 12)
+
+# Calcular las ganancias en 10 años
+df['profit_10_years'] = (df['price_rent'] * 12 * 10) - df['pricepop']
+
+# Identificar la propiedad con menor tiempo de recuperación y mayor ganancia en 10 años
+min_recovery_time = df.loc[df['time_to_recover'].idxmin()]
+max_profit_10_years = df.loc[df['profit_10_years'].idxmax()]
+
+# Configurar la página de Streamlit
+st.title("Análisis de Propiedades")
+
+st.header("Propiedad con menor tiempo de recuperación de la inversión")
+st.write(f"**ID:** {min_recovery_time['id']}")
+st.write(f"**Ubicación:** {min_recovery_time['neighbourhoodMun']}")
+st.write(f"**Habitaciones:** {min_recovery_time['rooms']}")
+st.write(f"**Dimensión:** {min_recovery_time['dimension']} m²")
+st.write(f"**Precio de compra:** {min_recovery_time['pricepop']} EUR")
+st.write(f"**Precio de renta mensual:** {min_recovery_time['price_rent']} EUR")
+st.write(f"**Tiempo para recuperar la inversión:** {min_recovery_time['time_to_recover']:.2f} años")
+
+st.header("Propiedad con mayor ganancia en 10 años")
+st.write(f"**ID:** {max_profit_10_years['id']}")
+st.write(f"**Ubicación:** {max_profit_10_years['neighbourhoodMun']}")
+st.write(f"**Habitaciones:** {max_profit_10_years['rooms']}")
+st.write(f"**Dimensión:** {max_profit_10_years['dimension']} m²")
+st.write(f"**Precio de compra:** {max_profit_10_years['pricepop']} EUR")
+st.write(f"**Precio de renta mensual:** {max_profit_10_years['price_rent']} EUR")
+st.write(f"**Ganancia en 10 años:** {max_profit_10_years['profit_10_years']} EUR (esto significa que no hay ganancia, sino una pérdida)")
+
+# Mostrar la tabla completa
+st.header("Datos de todas las propiedades")
+st.dataframe(df)

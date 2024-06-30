@@ -19,6 +19,7 @@ scikit-learn
 scipy
 ortools
 folium
+yfinance
 
 # APIs y scripts
 wandb

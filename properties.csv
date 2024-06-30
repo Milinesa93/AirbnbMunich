@@ -1,5 +1,5 @@
-neighbourhoodMun,rooms,dimension,Precio
-Maxvorstadt,4,64m²,€872.900
-Maxvorstadt,2,54m²,€715.000
-Ludwigsvorstadt Isarvorstadt,1,26m²,€318.000
-Maxvorstadt,1,24m²,€399.000
+id,neighbourhoodMun,rooms,dimension,pricepop,price_rent
+Maxvorstadt64m²,Maxvorstadt,4,64m²,872.900,2000.00
+Maxvorstadt54m²,Maxvorstadt,2,54m²,715.000,1800.00
+Ludwigsvorstadt Isar.26m²,Ludwigsvorstadt Isarvorstadt,1,26m²,318.000,1200.00
+Maxvorstadt24m²,Maxvorstadt,1,24m²,399.000,1200.00
