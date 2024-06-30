@@ -22,10 +22,18 @@ import streamlit.components.v1 as components
 file_path = 'top10munichairbnb.csv'
 top10munich_df = pd.read_csv(file_path)
 
+file_pathprop = 'properties.csv'
+propvalues= pd.read_csv(file_pathprop)
+
+
+base="dark"
+backgroundColor="#2784a0"
+
+
 # Crear el título y la descripción en Streamlit
-st.title('Análisis de inversión en los 10 barrios más populares de Munich')
-st.subheader("Un grupo de inversionistas, solicitan un estudio sobre la ciudad de Munich cercano a Theresienwiese, donde se celebra todos los años el OctokerFest. Creen que invertir en esta zona, les dará mayores ganancias a futuro que en otras zonas de Munich. El objetivo de adquirir la propiedad, es convertirlo en un Airbnb, quieren determinar según los resultados si será para compartir o departamento entero, según cual da mayores ganancias.")
-st.write('En este análisis se pretende determinar cuál de los 10 barrios más populares de Munich es el mejor para invertir en un apartamento turístico. Para ello se han tenido en cuenta diferentes variables como el precio medio de alquiler por barrio y las puntuaciones más altas por location.')
+st.title('Análisis de inversión en Munich, cercanías de Theresienwiese')
+st.subheader("Un grupo de inversionistas solicita un estudio sobre la ciudad de Munich cerca de Theresienwiese, donde se celebra el Oktoberfest todos los años. Creen que invertir en esta zona les dará mayores ganancias a futuro que en otras zonas de Munich. El objetivo de adquirir la propiedad es convertirla en un Airbnb y quieren determinar según los resultados si será para compartir o departamento entero, según cuál genere mayores ganancias.")
+st.write('En este análisis se pretende determinar cuál de los 10 barrios más populares de Munich es el mejor para invertir en un apartamento turístico. Para ello se han tenido en cuenta diferentes variables como el precio medio de alquiler por barrio y las puntuaciones más altas por ubicación.')
 st.write('A continuación se muestra un mapa con los 10 barrios más populares de Munich.')
 
 # Crear mapa centrado en Theresienwiese
@@ -67,7 +75,8 @@ for idx, row in top10munich_df.iterrows():
         <strong>Neighbourhood:</strong> {row['neighbourhood']}<br><br>
         <strong>Room Type:</strong> {row['room_type']}<br><br>
         <strong>Price per day:</strong> ${row['price_perday']}<br><br>
-        <strong>Review Scores Location:</strong> {row['review_scores_location']}
+        <strong>Review Scores Location:</strong> {row['review_scores_location']}<br><br>
+        {'<strong>Accomodates:</strong> ' + str(row['accomodates'])}
     </div>
     """
     popup = folium.Popup(popup_html, max_width=300)
