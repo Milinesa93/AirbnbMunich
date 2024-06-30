@@ -81,3 +81,4 @@ for idx, row in top10munich_df.iterrows():
     
 # Mostrar el mapa en Streamlit
 folium_static(m)
+
