@@ -12,9 +12,19 @@ import streamlit as st
 import streamlit_folium as sf
 import streamlit.components.v1 as components
 import folium
+from geopy.geocoders import Nominatim
+import streamlit as st
+import pandas as pd
+from geopy.geocoders import Nominatim
+import folium
+import pandas as pd
+from geopy.geocoders import GoogleV3
+import requests
+import streamlit as st
+from streamlit_folium import folium_static
 
-file_path = 'analisis top 10/top10munichairbnb.csv'
-top10munich_df = pd.read_csv('analisis top 10/top10munichairbnb.csv')
+file_path = 'top10munichairbnb.csv'
+top10munich_df = pd.read_csv('top10munichairbnb.csv')
 
 #crear mapa con las coordenadas de los 10 barrios
 st.title('Análisis de inversión en los 10 barrios más populares de Munich')
@@ -22,13 +32,20 @@ st.subheader ("Un grupo de inversionistas, solicitan un estudio sobre la ciudad 
 st.write('En este análisis se pretende determinar cuál de los 10 barrios más populares de Munich es el mejor para invertir en un apartamento turístico. Para ello se han tenido en cuenta diferentes variables como el precio medio de alquiler por barrio y las puntuaciones más altas por location ')
 st.write('A continuación se muestra un mapa con los 10 barrios más populares de Munich')    
 
-#Crear mapa centrado en un punto inicial en Theresienwiese : 
-48.13651999254395, 11.54404714766402
-m = folium.Map(location=[48.13651999254395, 11.54404714766402], zoom_start=12)
 
-# Añadir puntos en el mapa
-for index, row in top10munich_df.iterrows():
-    folium.Marker([row['latitude'], row['longitude']], popup=row['neighborhood']).add_to(m)
+# Crear mapa centrado en Theresienwiese
+m = folium.Map(location=[48.13583263039702, 11.545248777231926], zoom_start=12)
 
-# Mostrar el mapa
-components.html(m._repr_html_(), width=800, height=600)
+folium.Marker([48.13583263039702, 11.545248777231926], popup='Theresienwiese').add_to(m)
+
+# Añadir los puntos al mapa
+for idx, row in top10munich_df.iterrows():
+        folium.Marker(
+            location=[row['latitude'], row['longitude']],
+            popup=row['neighbourhood'],
+            icon=folium.Icon(color='green', icon='info-sign')
+        ).add_to(m)
+
+
+
+folium_static(m)
