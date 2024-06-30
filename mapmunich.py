@@ -22,30 +22,46 @@ from geopy.geocoders import GoogleV3
 import requests
 import streamlit as st
 from streamlit_folium import folium_static
+from folium.plugins import MarkerCluster
+from folium import IFrame
+import streamlit.components.v1 as components
 
+
+# Leer el archivo CSV
 file_path = 'top10munichairbnb.csv'
-top10munich_df = pd.read_csv('top10munichairbnb.csv')
+top10munich_df = pd.read_csv(file_path)
 
-#crear mapa con las coordenadas de los 10 barrios
+# Crear el título y la descripción en Streamlit
 st.title('Análisis de inversión en los 10 barrios más populares de Munich')
-st.subheader ("Un grupo de inversionistas, solicitan un estudio sobre la ciudad de Munich cercano a Theresienwiese, donde se celebra todos los años el OctokerFest. Creen que invertir en esta zona, les dara mayores ganancias a futuro que en otras zonas de Munich. El objetivo de adquirir la propiedad, es convertirlo en un Airbnb, quieren determinar según los resultados si será para compartir o departamento entero, según cual da mayores ganancias. ")
-st.write('En este análisis se pretende determinar cuál de los 10 barrios más populares de Munich es el mejor para invertir en un apartamento turístico. Para ello se han tenido en cuenta diferentes variables como el precio medio de alquiler por barrio y las puntuaciones más altas por location ')
-st.write('A continuación se muestra un mapa con los 10 barrios más populares de Munich')    
-
+st.subheader("Un grupo de inversionistas, solicitan un estudio sobre la ciudad de Munich cercano a Theresienwiese, donde se celebra todos los años el OctokerFest. Creen que invertir en esta zona, les dará mayores ganancias a futuro que en otras zonas de Munich. El objetivo de adquirir la propiedad, es convertirlo en un Airbnb, quieren determinar según los resultados si será para compartir o departamento entero, según cual da mayores ganancias.")
+st.write('En este análisis se pretende determinar cuál de los 10 barrios más populares de Munich es el mejor para invertir en un apartamento turístico. Para ello se han tenido en cuenta diferentes variables como el precio medio de alquiler por barrio y las puntuaciones más altas por location.')
+st.write('A continuación se muestra un mapa con los 10 barrios más populares de Munich.')
 
 # Crear mapa centrado en Theresienwiese
 m = folium.Map(location=[48.13583263039702, 11.545248777231926], zoom_start=12)
+folium.Marker([48.13583263039702, 11.545248777231926], popup='Barrio Octokerfest: Theresienwiese').add_to(m)
 
-folium.Marker([48.13583263039702, 11.545248777231926], popup='Theresienwiese').add_to(m)
+icon_path = 'logoairbnb.png'
 
-# Añadir los puntos al mapa
+# Añadir marcadores con iconos personalizados y popups mejorados
 for idx, row in top10munich_df.iterrows():
-        folium.Marker(
-            location=[row['latitude'], row['longitude']],
-            popup=row['neighbourhood'],
-            icon=folium.Icon(color='green', icon='info-sign')
-        ).add_to(m)
+    icon = folium.CustomIcon(icon_path, icon_size=(45, 35))  # Ajusta el tamaño del icono según sea necesario
+    
+    # Crear popup con HTML y CSS para mejor visualización
+    popup_html = f"""
+    <div style="font-family: Arial; color: black; max-width: 300px;">
+        <strong>Neighbourhood:</strong> {row['neighbourhood']}<br><br>
+        <strong>Room Type:</strong> {row['room_type']}<br><br>
+        <strong>Price per day:</strong> ${row['price_perday']}
+    </div>
+    """
+    popup = folium.Popup(popup_html, max_width=300)
+    
+    folium.Marker(
+        location=[row['latitude'], row['longitude']],
+        popup=popup,
+        icon=icon
+    ).add_to(m)
 
-
-
+# Mostrar el mapa en Streamlit
 folium_static(m)
