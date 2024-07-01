@@ -56,11 +56,11 @@ st.markdown("""
 
     .title-text {
         color:white;
-        font-size:3em;
+        font-size:2em; /* Modified font size */
     }
     </style>
     <div class="title-container fade-in">
-        <h1 class="title-text">Análisis de Inversión en Munich: <br><br> Zona Theresienwiese</h1>
+        <h1 class="title-text">Análisis de Inversión en Munich: <br><br> Zona Theresienwiese <br><br> Asesora: Milagros Vidal</h1>
     </div>
     <br><br> 
     """, unsafe_allow_html=True)
@@ -243,7 +243,6 @@ fig_payback = px.bar(
 fig_timeline = go.Figure()
 
 
-
 for index, row in properties_df.iterrows():
     years = list(range(1, 11))
     capital_recovered = [min(row['pricepop'], year * row['annual_rent_income']) for year in years]
@@ -271,7 +270,7 @@ fig_timeline.update_layout(
     template='plotly_white'
 )
 
-# Mostrar gráficos en Streamlit
+
 st.plotly_chart(fig_roi)
 st.plotly_chart(fig_payback)
 st.plotly_chart(fig_timeline)
@@ -289,6 +288,25 @@ st.markdown("""
 ### Conclusión:
 La propiedad **"Ludwigsvorstadt Isar.26m²"** es la mejor opción para invertir y arrendar en Airbnb. Esta propiedad no solo permitirá recuperar el capital invertido más rápidamente, sino que también generará las mejores ganancias anuales en relación con su precio de compra. Por lo tanto, se recomienda invertir en esta propiedad para maximizar las ganancias y recuperar rápidamente la inversión.
 """)
+
+
+
+st.markdown("<h2 style='text-align: center;'>¡Gracias por su preferencia!</h2>", unsafe_allow_html=True)
+
+
+# Nota al pie con borde naranja
+footer = """
+<div style="border:2px solid #E47302; padding: 10px; margin-top: 20px;">
+    <p>Contacto: mvidal@muncheninm.de</p>
+    <p>Teléfono: +49 89 12345678</p>
+    <p>Dirección: Schloss Nymphenburg, 80638 München, Alemania</p>
+    <p>Horario de Atención: Lunes a Viernes de 9:00 am a 5:00 pm</p>
+    <p>Sitio Web: <a href="https://www.muncheninm.de" target="_blank">München Inmuebles</a></p>
+</div>
+"""
+
+st.markdown(footer, unsafe_allow_html=True)
+
 
 
 #recurso de como hacer html y colores: https://htmlcolorcodes.com/es/selector-de-color/
