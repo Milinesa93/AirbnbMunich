@@ -22,7 +22,7 @@ from matplotlib.animation import FuncAnimation
 import tempfile
 import plotly.graph_objects as go
 import plotly.express as px
-
+import matplotlib.colors as mcolors
 
 
 # Leer el archivo CSV
@@ -32,7 +32,7 @@ top10munich_df = pd.read_csv(file_path)
 file_pathprop = 'properties.csv'
 properties_df = pd.read_csv(file_pathprop)
 
-
+st.image('castillomunich.png', width=700)
 
 # Titulo de la página que aparece
 st.markdown("""
@@ -47,23 +47,65 @@ st.markdown("""
     }
 
     .title-container {
-        background-color:#E47302 ;
-        padding:10px;
+        background-color:none;
+        padding:30px;
         border-radius:20px;
-        border:2px solid #1E90;
+        border:2px solid #E47302 ;
         text-align:center;
     }
 
     .title-text {
         color:white;
-        font-size:3.5em;
+        font-size:3em;
     }
     </style>
     <div class="title-container fade-in">
         <h1 class="title-text">Análisis de Inversión en Munich: <br><br> Zona Theresienwiese</h1>
     </div>
+    <br><br> 
     """, unsafe_allow_html=True)
 
+#info sobre el oktoberfest: nivel de ocupacion y cantidad de gente que va al año aprox
+
+st.markdown("<h1 style='text-align: center;'>Oktoberfest en Munich</h1>", unsafe_allow_html=True)
+
+
+kagledf = pd.read_csv('oktoberfest.csv')
+
+# Filtrar los datos para los últimos 5 años
+last_5_years_df = kagledf.sort_values(by='year', ascending=False).head(5)
+
+# Crear el gráfico de línea
+fig, ax = plt.subplots(figsize=(10, 6))
+
+
+ax.plot(last_5_years_df['year'], last_5_years_df['guests_total'], marker='o', color='#66b', linestyle='-', linewidth=2, markersize=8)
+ax.set_xlabel('Año', color='white')
+ax.set_ylabel('Total de Invitados (Millones)', color='white')
+ax.set_title('Total de visitantes al Oktoberfest en los Últimos 5 Años', color='white')
+ax.invert_xaxis()  # Invertir el eje x para mostrar el año más reciente a la derecha
+
+# Estilo limpio y minimalista
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.yaxis.grid(False, linestyle='-', alpha=0.7, color='white')
+ax.xaxis.grid(False)
+ax.invert_xaxis()  
+
+# Cambiar el fondo del gráfico
+ax.set_facecolor('none')
+fig.patch.set_facecolor('none')
+
+
+ax.tick_params(axis='x', colors='white')
+ax.tick_params(axis='y', colors='white')
+plt.xticks(rotation=45, color='white')
+plt.yticks(rotation=0, color='white')
+
+# grafico de los ultimos 5 años del oktoberfest
+st.pyplot(fig)
 
 
 # tabla top10 de los Airbnb en Munich
@@ -209,53 +251,5 @@ st.markdown("""
 La propiedad **"Ludwigsvorstadt Isar.26m²"** es la mejor opción para invertir y arrendar en Airbnb. Esta propiedad no solo permitirá recuperar el capital invertido más rápidamente, sino que también generará las mejores ganancias anuales en relación con su precio de compra. Por lo tanto, se recomienda invertir en esta propiedad para maximizar las ganancias y recuperar rápidamente la inversión.
 """)
 
-# file_pathprop = 'properties.csv'
-# properties_df = pd.read_csv(file_pathprop)
 
-
-# # Calcular el tiempo de recuperación de la inversión
-# properties_df['time_to_recover'] = properties_df['pricepop'] / (properties_df['price_rent'] * 12)
-
-# # Calcular las ganancias en 10 años
-# properties_df['profit_10_years'] = (properties_df['price_rent'] * 12 * 10) - properties_df['pricepop']
-
-# # Identificar la propiedad con menor tiempo de recuperación y mayor ganancia en 10 años
-# min_recovery_time = properties_df.loc[properties_df['time_to_recover'].idxmin()]
-# max_profit_10_years = properties_df.loc[properties_df['profit_10_years'].idxmax()]
-
-# # Configurar la página de Streamlit
-# st.title("Análisis de Propiedades")
-
-# st.header("Propiedad con menor tiempo de recuperación de la inversión")
-# st.write(f"**ID:** {min_recovery_time['id']}")
-# st.write(f"**Ubicación:** {min_recovery_time['neighbourhoodMun']}")
-# st.write(f"**Habitaciones:** {min_recovery_time['rooms']}")
-# st.write(f"**Dimensión:** {min_recovery_time['dimension']} m²")
-# st.write(f"**Precio de compra:** {min_recovery_time['pricepop']} EUR")
-# st.write(f"**Precio de renta mensual:** {min_recovery_time['price_rent']} EUR")
-# st.write(f"**Tiempo para recuperar la inversión:** {min_recovery_time['time_to_recover']:2f} años")
-
-# # Gráfico de barras para el tiempo de recuperación de la inversión
-# fig1 = go.Figure(data=[go.Bar(x=properties_df['id'], y=properties_df['time_to_recover'])])
-# fig1.update_layout(title='Tiempo de recuperación de la inversión por propiedad', xaxis_title='ID de propiedad', yaxis_title='Tiempo de recuperación (años )')
-# st.plotly_chart(fig1, use_container_width=True)
-
-
-# st.header("Propiedad con mayor ganancia en 10 años")
-# st.write(f"**ID:** {max_profit_10_years['id']}")
-# st.write(f"**Ubicación:** {max_profit_10_years['neighbourhoodMun']}")
-# st.write(f"**Habitaciones:** {max_profit_10_years['rooms']}")
-# st.write(f"**Dimensión:** {max_profit_10_years['dimension']} m²")
-# st.write(f"**Precio de compra:** {max_profit_10_years['pricepop']} EUR")
-# st.write(f"**Precio de renta mensual:** {max_profit_10_years['price_rent']} EUR")
-# st.write(f"**Ganancia en 10 años:** {max_profit_10_years['profit_10_years']} EUR (esto significa que no hay ganancia, sino una pérdida)")
-
-# # Mostrar la tabla completa
-# st.header("Datos de todas las propiedades")
-# st.dataframe(properties_df)
-
-
-# # Gráfico de barras para las ganancias en 10 años
-# fig2 = go.Figure(data=[go.Bar(x=properties_df['id'], y=properties_df['profit_10_years'])])
-# fig2.update_layout(title='Ganancias en 10 años por propiedad', xaxis_title='ID de propiedad', yaxis_title='Ganancias en 10 años (EUR)')
-# st.plotly_chart(fig2, use_container_width=True)
+#recurso de como hacer html y colores: https://htmlcolorcodes.com/es/selector-de-color/
