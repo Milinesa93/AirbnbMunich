@@ -1,10 +1,11 @@
 # Librerías esenciales
-numpy
 pandas
 openpyxl
 geopy
 streamlit_folium
 scikit-learn
+numpy
+
 # Visualizaciones
 matplotlib
 seaborn
