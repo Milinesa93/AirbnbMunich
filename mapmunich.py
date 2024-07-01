@@ -345,3 +345,6 @@ st.markdown(footer, unsafe_allow_html=True)
 
 
 #recurso de como hacer html y colores: https://htmlcolorcodes.com/es/selector-de-color/
+# fuentes utilizadas:
+# https://www.kaggle.com/oktoberfest/oktoberfest
+#https://app.airdna.co/data/de/30852?tab=performance
