@@ -75,7 +75,7 @@ kagledf = pd.read_csv('oktoberfest.csv')
 # Filtrar los datos para los últimos 5 años
 last_5_years_df = kagledf.sort_values(by='year', ascending=False).head(5)
 
-# Crear el gráfico de línea
+# grafico para ver ultimos 5 años
 fig, ax = plt.subplots(figsize=(10, 6))
 
 
@@ -83,9 +83,8 @@ ax.plot(last_5_years_df['year'], last_5_years_df['guests_total'], marker='o', co
 ax.set_xlabel('Año', color='white')
 ax.set_ylabel('Total de Invitados (Millones)', color='white')
 ax.set_title('Total de visitantes al Oktoberfest en los Últimos 5 Años', color='white')
-ax.invert_xaxis()  # Invertir el eje x para mostrar el año más reciente a la derecha
+ax.invert_xaxis()  
 
-# Estilo limpio y minimalista
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 ax.spines['left'].set_visible(False)
@@ -94,10 +93,8 @@ ax.yaxis.grid(False, linestyle='-', alpha=0.7, color='white')
 ax.xaxis.grid(False)
 ax.invert_xaxis()  
 
-# Cambiar el fondo del gráfico
 ax.set_facecolor('none')
 fig.patch.set_facecolor('none')
-
 
 ax.tick_params(axis='x', colors='white')
 ax.tick_params(axis='y', colors='white')
@@ -105,6 +102,43 @@ plt.xticks(rotation=45, color='white')
 plt.yticks(rotation=0, color='white')
 
 # grafico de los ultimos 5 años del oktoberfest
+st.pyplot(fig)
+
+# Data de meses y tasas de ocupación
+months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Agos', 'Sep', 'Oct', 'Nov', 'Dic']
+occupancy_rates = [39, 40, 42, 45, 50, 55, 60, 65, 70, 68, 50, 45]
+
+data = pd.DataFrame({
+    'Month': months,
+    'Occupancy Rate (%)': occupancy_rates
+})
+
+fig, ax = plt.subplots(figsize=(10, 6), facecolor='none')
+ax.plot(data['Month'], data['Occupancy Rate (%)'], marker='o', linestyle='-', color='pink')
+
+oktoberfest_start = 'Sep'
+oktoberfest_end = 'Oct'
+ax.axvline(x=oktoberfest_start, color='yellow', linestyle='--', linewidth=2, label='Oktoberfest comienzo')
+ax.axvline(x=oktoberfest_end, color='yellow', linestyle='--', linewidth=2, label='Oktoberfest fin')
+
+ax.legend() # leyenda de los meses de Oktoberfest
+
+ax.set_title('Ocupación anual', color='white')
+ax.set_xlabel('Mes', color='white')
+ax.set_ylabel('Ocupación (%)', color='white')
+
+ax.tick_params(colors='white')
+
+fig.patch.set_alpha(0.0)
+ax.patch.set_alpha(0.0)
+
+ax.spines['bottom'].set_color('white')
+ax.spines['left'].set_color('white')
+ax.spines['top'].set_color('white')
+ax.spines['right'].set_color('white')
+ax.yaxis.grid(False, linestyle='-', alpha=0.7, color='white')
+
+
 st.pyplot(fig)
 
 
@@ -162,22 +196,23 @@ for idx, row in top10munich_df.iterrows():
     ).add_to(m)
     
     
-# Mostrar el mapa en Streamlit
+# mapa en Streamlit
 folium_static(m)
 
 #### HASTA ACA EL MAPA DE AIRBNB
 
+st.markdown("<h1 style='text-align: center;'>Análisis de Rentabilidad de Propiedades en Munich</h1>", unsafe_allow_html=True)
 
-# Convertir dimension a valor numérico (quitar 'm²' y convertir a int)
+# Análisis de Propiedades
 properties_df['dimension'] = properties_df['dimension'].str.replace('m²', '').astype(int)
 
-# Calcular ingreso anual por renta
+# ingreso anual por renta
 properties_df['annual_rent_income'] = properties_df['price_rent'] * 12
 
-# Calcular ROI (Return on Investment) como ingreso anual por renta dividido por pricepop
+# Calcular ROI como ingreso anual por renta dividido por pricepop
 properties_df['roi'] = properties_df['annual_rent_income'] / properties_df['pricepop']
 
-# Calcular período de recuperación del capital (años para recuperar la inversión)
+# período de recuperación del capital (años para recuperar la inversión)
 properties_df['payback_period'] = properties_df['pricepop'] / properties_df['annual_rent_income']
 
 # Gráfico de Rentabilidad Anual (ROI)
@@ -190,6 +225,8 @@ fig_roi = px.bar(
     color='roi',
     color_continuous_scale=px.colors.sequential.Teal
 )
+
+st.write("Retorno Sobre la Inversión. Es una métrica usada para saber cuánto se ganó a través de sus inversiones.")
 
 # Gráfico de Período de Recuperación del Capital
 fig_payback = px.bar(
@@ -204,6 +241,8 @@ fig_payback = px.bar(
 
 # Línea de tiempo de recuperación de capital y ganancias acumuladas
 fig_timeline = go.Figure()
+
+
 
 for index, row in properties_df.iterrows():
     years = list(range(1, 11))
