@@ -243,7 +243,7 @@ file_pathprop = 'properties.csv'
 properties_df = pd.read_csv(file_pathprop)
 
 # Mostrar tabla de propiedades
-st.dataframe(properties_df.style.format({'pricepop': '{:.2f}'}))
+st.dataframe(properties_df.style.format({'pricepop': '{:.0f}'}))
 
 st.markdown("<h1 style='text-align: center;'>Análisis de Rentabilidad de Propiedades en Munich</h1>", unsafe_allow_html=True)
 
