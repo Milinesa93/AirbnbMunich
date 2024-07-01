@@ -236,6 +236,17 @@ folium_static(m)
 
 #### HASTA ACA EL MAPA DE AIRBNB
 
+st.markdown("<h1 style='text-align: center;'>Propiedades en Munich</h1>", unsafe_allow_html=True)
+
+# Leer el archivo de propiedades
+file_pathprop = 'properties.csv'
+properties_df = pd.read_csv(file_pathprop)
+
+# Tabla top 10 de propiedades en Munich
+st.markdown("<h1 style='text-align: center;'>Top 10 de Propiedades en Munich</h1>", unsafe_allow_html=True)
+st.dataframe(properties_df[['neighbourhood', 'room_type', 'price_perday', 'review_scores_location', 'accomodates']])
+
+
 st.markdown("<h1 style='text-align: center;'>Análisis de Rentabilidad de Propiedades en Munich</h1>", unsafe_allow_html=True)
 
 # Análisis de Propiedades
