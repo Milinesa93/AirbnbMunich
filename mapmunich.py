@@ -278,7 +278,7 @@ fig_payback = px.bar(
     properties_df.sort_values(by='payback_period', ascending=True),
     x='id',
     y='payback_period',
-    labels={'payback_period': 'Período de Recuperación (años)', 'id': 'Propiedad'},
+    labels={'payback_period': 'Período de Recuperación (meses)', 'id': 'Propiedad'},
     title='Período de Recuperación del Capital por Propiedad',
     color='payback_period',
     color_continuous_scale=px.colors.sequential.Sunset
@@ -328,7 +328,7 @@ st.markdown("""
    - La propiedad **"Ludwigsvorstadt Isar.26m²"** presenta la mayor rentabilidad anual con un ROI del 45.28%. Esto significa que, en comparación con otras propiedades, esta generará mayores ingresos anuales respecto a su precio de compra.
    
 2. **Período de Recuperación del Capital:**
-   - La misma propiedad **"Ludwigsvorstadt Isar.26m²"** también tiene el menor período de recuperación del capital con aproximadamente 0.022 años (casi 8 meses). Esto indica que recuperará la inversión inicial más rápido que las otras propiedades.
+   - La misma propiedad **"Ludwigsvorstadt Isar.26m²"** también tiene el menor período de recuperación del capital con aproximadamente en 8 meses. Esto indica que recuperará la inversión inicial más rápido que las otras propiedades.
 
 ### Conclusión:
 La propiedad **"Ludwigsvorstadt Isar.26m²"** es la mejor opción para invertir y arrendar en Airbnb. Esta propiedad no solo permitirá recuperar el capital invertido más rápidamente, sino que también generará las mejores ganancias anuales en relación con su precio de compra. Por lo tanto, se recomienda invertir en esta propiedad para maximizar las ganancias y recuperar rápidamente la inversión.
