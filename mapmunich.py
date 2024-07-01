@@ -141,6 +141,41 @@ ax.yaxis.grid(False, linestyle='-', alpha=0.7, color='white')
 
 st.pyplot(fig)
 
+# canalaes que se reservan alojamiento en Munich
+
+# Datos para el gráfico de barra
+labels = ['Airbnb', 'Vrbo', 'Ambos']
+sizes = [8388, 82, 171]
+colors = ['#66b', '#f9c', '#6cf']
+
+# Calcular porcentajes
+total = sum(sizes)
+percentages = [(size / total) * 100 for size in sizes]
+
+# Crear gráfico de barra
+fig, ax = plt.subplots(figsize=(6, 6), facecolor='none')
+ax.bar(labels, sizes, color=colors)
+
+# Agregar etiquetas de datos
+for i, v in enumerate(sizes):
+    ax.text(i, v + 50, f"{v} ({percentages[i]:.2f}%)", color='white', ha='center')
+
+# Configuraciones adicionales
+ax.set_title('Distribución de canales de reservas', color='white')
+ax.set_xlabel('Tipo de Alojamiento', color='white')
+ax.set_ylabel('Cantidad', color='white')
+ax.spines['bottom'].set_color('white')
+ax.spines['left'].set_color('white')
+ax.spines['top'].set_color('white')
+ax.spines['right'].set_color('white')
+ax.yaxis.grid(False)
+ax.xaxis.grid(False)
+ax.tick_params(colors='white')
+
+fig.patch.set_alpha(0.0)
+ax.patch.set_alpha(0.0)
+# Mostrar gráfico
+st.pyplot(fig)
 
 # tabla top10 de los Airbnb en Munich
 st.markdown("<h1 style='text-align: center;'>Top 10 de Airbnb en Munich</h1>", unsafe_allow_html=True)
